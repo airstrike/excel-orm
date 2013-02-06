@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module1"
+Attribute VB_Name = "Connection"
 Public Connection As ADODB.Connection
 Public Command As ADODB.Command
 Public Records As ADODB.Recordset
@@ -123,7 +123,7 @@ Sub OutputRecords(ByRef Records As Recordset)
         xCol = 0
         
         elseCol = 10
-        For Each Fld In Records.Fields
+        For Each Fld In Records.fields
             xCol = xCol + 1
             Data.Cells(1, xCol) = Fld.Name
             Data.Cells(xRow, xCol) = Fld.Value
