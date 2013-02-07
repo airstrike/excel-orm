@@ -1172,8 +1172,8 @@ FirstNonEmptyStringIndexInArray = -1
 End Function
 
 
-Public Function InsertElementIntoArray(InputArray As Variant, Index As Long, _
-    Value As Variant) As Boolean
+Public Function InsertElementIntoArray(InputArray As Variant, index As Long, _
+    value As Variant) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' InsertElementIntoArray
 ' This function inserts an element with a value of Value into InputArray at locatation Index.
@@ -1227,7 +1227,7 @@ End If
 ' InsertElementIntoArray(Arr,UBound(Arr)+1,123)
 ' will insert 123 at the end of the array.
 '''''''''''''''''''''''''''''''''''''''''
-If (Index < LBound(InputArray)) Or (Index > UBound(InputArray) + 1) Then
+If (index < LBound(InputArray)) Or (index > UBound(InputArray) + 1) Then
     Exit Function
 End If
 
@@ -1245,7 +1245,7 @@ ReDim Preserve InputArray(LBound(InputArray) To UBound(InputArray) + 1)
 '''''''''''''''''''''''''''''''''''''''''''''''
 On Error Resume Next
 Err.Clear
-InputArray(UBound(InputArray)) = Value
+InputArray(UBound(InputArray)) = value
 If Err.Number <> 0 Then
     ''''''''''''''''''''''''''''''''''''''
     ' An error occurred, most likely
@@ -1259,14 +1259,14 @@ End If
 '''''''''''''''''''''''''''''''''''''''''''''
 ' Shift everything to the right.
 '''''''''''''''''''''''''''''''''''''''''''''
-For Ndx = UBound(InputArray) To Index + 1 Step -1
+For Ndx = UBound(InputArray) To index + 1 Step -1
     InputArray(Ndx) = InputArray(Ndx - 1)
 Next Ndx
 
 '''''''''''''''''''''''''''''''''''''''''''''
 ' Insert Value at Index
 '''''''''''''''''''''''''''''''''''''''''''''
-InputArray(Index) = Value
+InputArray(index) = value
 
     
 InsertElementIntoArray = True

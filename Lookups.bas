@@ -1,5 +1,5 @@
 Attribute VB_Name = "Lookups"
-Public Function AndreLookup(Field As String, Grouped As Boolean, Sorted As Boolean, _
+Public Function AndreLookup(field As String, Grouped As Boolean, Sorted As Boolean, _
                          ParamArray Lookups() As Variant) As Variant
 
     'Application.Volatile
@@ -20,7 +20,7 @@ Public Function AndreLookup(Field As String, Grouped As Boolean, Sorted As Boole
     Dim x As Long
     
     'On Error GoTo ErrHandler
-    FieldPos = GetFieldPos(Field)
+    FieldPos = GetFieldPos(field)
         
     L = UBound(Lookups) - LBound(Lookups) + 1
     
@@ -72,17 +72,17 @@ StartReturn:
             Append = True
 
             If L = 0 Or NonBlankFilters = 0 Then
-                InsertedValue = .Cells(xRow, FieldPos).Value
+                InsertedValue = .Cells(xRow, FieldPos).value
             Else
 
                 For xField = LBound(LookupFields) To UBound(LookupFields)
-                    Rowvalue = .Cells(xRow, LookupPos(xField)).Value
+                    Rowvalue = .Cells(xRow, LookupPos(xField)).value
                     If LookupValues(xField) <> "" And CStr(Rowvalue) <> LookupValues(xField) Then
                         Append = False
                         GoTo SkipAppending
                     End If
                 Next xField
-                InsertedValue = .Cells(xRow, FieldPos).Value
+                InsertedValue = .Cells(xRow, FieldPos).value
             
             End If
             
@@ -123,12 +123,12 @@ ErrHandler:
 
 End Function
 
-Public Function UniqueLookup(Field As String, Optional Sorted As Boolean = False) As Variant
+Public Function UniqueLookup(field As String, Optional Sorted As Boolean = False) As Variant
     Dim FieldPos As Long, xRow As Long, ReturnRows As Long
     Dim Results() As Variant
     ReDim Results(0 To 0) As Variant
     
-    FieldPos = GetFieldPos(Field)
+    FieldPos = GetFieldPos(field)
     
     ResultsSize = 0
     'MaxResultsSize = 10000
@@ -138,7 +138,7 @@ Public Function UniqueLookup(Field As String, Optional Sorted As Boolean = False
         lastrow = .UsedRange.Rows.Count
         
         For xRow = 2 To lastrow Step 1
-            InsertedValue = .Cells(xRow, FieldPos).Value
+            InsertedValue = .Cells(xRow, FieldPos).value
             If LastValue <> InsertedValue Then
                 LastValue = InsertedValue
                 Inserted = False
@@ -170,10 +170,10 @@ SimpleReturn:
                                                   
 End Function
 
-Public Function GetFieldPos(ByVal Field As String)
+Public Function GetFieldPos(ByVal field As String)
     On Error GoTo ErrHandler
     With Application.WorksheetFunction
-        GetFieldPos = .Match(Field, ActiveWorkbook.Sheets("BASE").Range("1:1"), 0)
+        GetFieldPos = .Match(field, ActiveWorkbook.Sheets("BASE").Range("1:1"), 0)
         Exit Function
     End With
     

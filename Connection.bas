@@ -95,7 +95,7 @@ End Function
 Sub OutputRecords(ByRef Records As Recordset)
     'Set Records = New ADODB.Recordset
     
-    Dim Fld As ADODB.Field
+    Dim fld As ADODB.field
     
     xRow = 1
     
@@ -123,12 +123,12 @@ Sub OutputRecords(ByRef Records As Recordset)
         xCol = 0
         
         elseCol = 10
-        For Each Fld In Records.fields
+        For Each fld In Records.fields
             xCol = xCol + 1
-            Data.Cells(1, xCol) = Fld.Name
-            Data.Cells(xRow, xCol) = Fld.Value
+            Data.Cells(1, xCol) = fld.name
+            Data.Cells(xRow, xCol) = fld.value
            
-        Next Fld
+        Next fld
         Records.MoveNext
         
     Loop

@@ -32,9 +32,9 @@ Function ExcludeEmpty(ByRef Arr As Variant)
     
 End Function
 
-Function PresentInArray(InputArray, Value)
+Function PresentInArray(InputArray, value)
     For i = LBound(InputArray) To UBound(InputArray)
-        If InputArray(i) = Value Then
+        If InputArray(i) = value Then
             PresentInArray = True
             Exit Function
         End If
@@ -43,21 +43,21 @@ Function PresentInArray(InputArray, Value)
     PresentInArray = False
 End Function
 
-Function AppendToArrayUniquely(InputArray, Value) As Boolean
+Function AppendToArrayUniquely(InputArray, value) As Boolean
     Dim bool_ As Boolean
     bool_ = False
     
-    If Not PresentInArray(InputArray, Value) Then
-        bool_ = InsertElementIntoArray(InputArray, UBound(InputArray) + 1, Value)
+    If Not PresentInArray(InputArray, value) Then
+        bool_ = InsertElementIntoArray(InputArray, UBound(InputArray) + 1, value)
     End If
     
     AppendToArrayUniquely = bool_
         
 End Function
 
-Function GetItem(Arr, Index, Optional Default As String = "")
+Function GetItem(Arr, index, Optional Default As String = "")
     On Error GoTo ErrHandler
-    GetItem = Arr(Index)
+    GetItem = Arr(index)
     Exit Function
     
 ErrHandler:
