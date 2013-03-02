@@ -20,10 +20,10 @@ Sub TestCreateType()
 End Sub
 
 Sub CreateType(typename As String, Optional attrs As Variant)
-    If IsMissing(bases) Then
-        ReDim bases(0 To 0)
-        bases(0) = ""
-    End If
+    'If IsMissing(bases) Then
+    '    ReDim bases(0 To 0)
+    '    bases(0) = ""
+    'End If
     
     If IsMissing(attrs) Then
         ReDim attrs(0 To 1, 0 To 0)
@@ -31,7 +31,7 @@ Sub CreateType(typename As String, Optional attrs As Variant)
         attrs(0, 1) = ""
     End If
     
-    CreateType_ typename, bases, attrs
+    CreateType_ typename, attrs ', bases, attrs
 End Sub
 
 Private Sub CreateType_(typename As String, attrs As Variant)

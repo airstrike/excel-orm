@@ -13,39 +13,69 @@ Private ¨filters As String
 Private ¨def As String
 Dim flds As Variant
 
-Private Sub class_initialize()
+Private Sub Class_Initialize()
     ReDim flds(0 To 2, 0 To 0)
     Set Me.fields = flds
     
-
 End Sub
 
 Sub make(classname As String)
     Me.§ ParseBaseModel()
-    Me.make_fields
+    Me.make_initialization
+
     'For x = LBound(Me.fields) To UBound(Me.fields)
     '    'make sure this is correct
     '    Me.§ "Private " & Me.fields(x)(0) & " As " & Me.fields(x)(1).vb_type
     'Next
 
-    Debug.Print Me.def
+    'Debug.Print Me.def
+    Call CreateClassFromString(classname, Me.def)
     
     'create fields again in the created module after making it, probably on __init__?
 End Sub
 
+Sub make_initialization()
+    Me.§ vbCrLf & "Private Sub class_initialize()" & vbCrLf
+
+    Me.§ "    ReDim flds(0 To " & UBound(Me.fields) & ", 0 To 2)"
+    Me.§ "    Set Me.fields = flds"
+    Me.§ ""
+    Me.make_table
+    Me.make_filters
+    Me.make_fields
+    
+    Me.§ vbCrLf & "End sub" & vbCrLf
+End Sub
+
+Sub make_table()
+    Me.§ "    Me.table = " & """" & Me.table & """" & vbCrLf
+End Sub
+
+Sub make_filters()
+    Me.§ "    Me.filters = " & """" & Me.filters_to_string() & """" & vbCrLf
+    'Me.§
+    
+End Sub
+
+Function filters_to_string() As String
+    Dim arr As Variant
+    arr = Split(Me.filters, vbCrLf)
+    filters_to_string = Join(arr, """" & " & _" & vbCrLf & "         " & """")
+
+End Function
+
 Sub make_fields()
     Dim s As String
-    Me.§ vbCrLf & "Private Sub class_initialize()" & vbCrLf
     For x = LBound(Me.fields) To UBound(Me.fields)
         Call Me.§("Private ¨" & Me.fields(x, 0) & " As " & Me.fields(x, 2), -1)
         
         For i = 0 To 2
-        Me.§ "    Me.fields(" & x & ", " & i & ") = " & Me.fields(x, i)
+        Me.§ "    flds(" & x & ", " & i & ") = " & """" & Me.fields(x, i) & """"
         Next
         
     Next
     
-    Me.§ vbCrLf & "End sub" & vbCrLf
+    Me.§ vbCrLf & "    Me.fields = flds"
     
 End Sub
 
@@ -58,8 +88,8 @@ Public Property Get fields() As Variant
     fields = ¨fields
 End Property
 
-Public Property Let fields(value As Variant)
-    ¨fields = value
+Public Property Let fields(Value As Variant)
+    ¨fields = Value
 End Property
 
 Public Property Get table() As String
@@ -67,8 +97,8 @@ Public Property Get table() As String
     
 End Property
 
-Public Property Let table(value As String)
-    ¨table = value
+Public Property Let table(Value As String)
+    ¨table = Value
 
 End Property
 
@@ -76,25 +106,25 @@ Public Property Get filters() As String
     filters = ¨filters
     
 End Property
-Public Property Let filters(value As String)
-    ¨filters = value
+Public Property Let filters(Value As String)
+    ¨filters = Value
     
 End Property
 
-Property Get field_(index As Long) As Variant
-    field = anArray(index)
+Property Get field_(Index As Long) As Variant
+    field = anArray(Index)
 End Property
  
-Property Let field_(index As Long, inValue As Variant)
-    Me.fields(index) = inValue
+Property Let field_(Index As Long, inValue As Variant)
+    Me.fields(Index) = inValue
 End Property
 
-Public Function add_field(name As String, ByVal field As Object) As Variant
+Public Function add_field(Name As String, ByVal field As Object) As Variant
     Dim fld As Variant, flds As Variant
     ReDim fld(0 To 2)
     Dim pos As Long
 
-    fld(0) = name
+    fld(0) = Name
     fld(1) = field.db_column
     fld(2) = field.vb_type
     
@@ -133,7 +163,7 @@ Public Property Get def() As String
     def = ¨def
     
 End Property
-Public Property Let def(value As String)
-    ¨def = value
+Public Property Let def(Value As String)
+    ¨def = Value
     
 End Property

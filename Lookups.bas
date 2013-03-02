@@ -29,7 +29,7 @@ Public Function AndreLookup(field As String, Grouped As Boolean, Sorted As Boole
     NonBlankFilters = L
     FieldCount = 0
     ResultsSize = 0
-    MaxResultsSize = Application.Caller.Rows.Count * Application.Caller.Columns.Count
+    MaxResultsSize = Application.Caller.Rows.Count * Application.Caller.columns.Count
     
     If L > 0 Then
         For i = LBound(Lookups) To UBound(Lookups) Step 2
@@ -72,17 +72,17 @@ StartReturn:
             Append = True
 
             If L = 0 Or NonBlankFilters = 0 Then
-                InsertedValue = .Cells(xRow, FieldPos).value
+                InsertedValue = .Cells(xRow, FieldPos).Value
             Else
 
                 For xField = LBound(LookupFields) To UBound(LookupFields)
-                    Rowvalue = .Cells(xRow, LookupPos(xField)).value
+                    Rowvalue = .Cells(xRow, LookupPos(xField)).Value
                     If LookupValues(xField) <> "" And CStr(Rowvalue) <> LookupValues(xField) Then
                         Append = False
                         GoTo SkipAppending
                     End If
                 Next xField
-                InsertedValue = .Cells(xRow, FieldPos).value
+                InsertedValue = .Cells(xRow, FieldPos).Value
             
             End If
             
@@ -132,13 +132,13 @@ Public Function UniqueLookup(field As String, Optional Sorted As Boolean = False
     
     ResultsSize = 0
     'MaxResultsSize = 10000
-    MaxResultsSize = Application.Caller.Rows.Count * Application.Caller.Columns.Count
+    MaxResultsSize = Application.Caller.Rows.Count * Application.Caller.columns.Count
     
     With ActiveWorkbook.Sheets("Base")
         lastrow = .UsedRange.Rows.Count
         
         For xRow = 2 To lastrow Step 1
-            InsertedValue = .Cells(xRow, FieldPos).value
+            InsertedValue = .Cells(xRow, FieldPos).Value
             If LastValue <> InsertedValue Then
                 LastValue = InsertedValue
                 Inserted = False

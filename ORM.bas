@@ -14,17 +14,17 @@ Sub TestCharField()
     
 End Sub
 
-Function filters(ParamArray ff() As Variant) As String
-    filters = vbCrLf & "WHERE"
+Function filter(ParamArray ff() As Variant) As String
+    filter = vbCrLf & "WHERE"
     Dim x As Long, u As Long, pass As Long
     
     'FIXME: Ignore filters that don't form a pair
-    'u = UBound(ff) - ((UBound(ff) - LBound(ff)) Mod 2)
+    u = UBound(ff) - ((UBound(ff) - LBound(ff)) Mod 2)
     pass = 0
     For x = LBound(ff) To u Step 2
-        If pass > 0 Then filters = filters & " AND "
-        filters = filters & vbCrLf & "    "
-        filters = filters & ParseLookup(ff(x), ff(x + 1))
+        If pass > 0 Then filter = filter & " AND "
+        filter = filter & vbCrLf & "    "
+        filter = filter & ParseLookup(ff(x), ff(x + 1))
         pass = pass + 1
         
     Next
@@ -80,12 +80,12 @@ Function ParseLookup(ByVal lookup_ As String, ByVal condition As Variant) As Str
 End Function
 
 
-Function SanitizedJoin(Arr As Variant) As String
+Function SanitizedJoin(arr As Variant) As String
     Dim x As Long, pass As Long
     pass = 0
-    For x = LBound(Arr) To UBound(Arr)
+    For x = LBound(arr) To UBound(arr)
         If pass > 0 Then s = s & ", "
-        s = s & "'" & Arr(x) & "'"
+        s = s & "'" & arr(x) & "'"
         pass = pass + 1
     Next
     

@@ -79,20 +79,90 @@ AfterCreateSheet:
     
 End Sub
 
-Public Function Execute(Optional ShtName As String = "SQL", Optional ClearStaleData As Boolean = False, Optional SkipConnect As Boolean = False, Optional KeepAlive As Boolean = False, Optional Output As Boolean = True) As ADODB.Recordset
+Public Function Execute(Optional ShtName As String = "", _
+    Optional ClearStaleData As Boolean = False, Optional SkipConnect As Boolean = False, _
+    Optional KeepAlive As Boolean = False, Optional OutputToSheet As Boolean = False, _
+    Optional ByRef MapToModel As Object) As ADODB.Recordset
     If Not SkipConnect Then Connect
     
+    recordsAffected = 0
     'Dim Records As ADODB.Recordset
-    'Set Records = Connection.Execute(strSql)
-    If Output Then Call OutputRecords(ShtName, ClearStaleData)
+    With Command
+        .ActiveConnection = Connection
+        .CommandText = strSql
+        .CommandType = adCmdText
+    End With
+    
+    Set Records = New Recordset
+    Set Records = Command.Execute(recordsAffected)
+    
+    Application.ODBCTimeout = 60
+    'strSql = "SET NOCOUNT ON " & vbCrLf & "BEGIN" & vbCrLf & strSql & "; " & strSql & vbCrLf & "END"
+    
+    'With Records
+    '    .Open Source:=strSql, ActiveConnection:=Connection, Options:=adCmdText
+    'End With
+    
+    
+    Output ShtName:=ShtName, MapToModel:=MapToModel, ClearStaleData:=ClearStaleData
     
     If Not KeepAlive Then Disconnect
-    
-    'Execute = Records
 
 End Function
 
-Sub OutputRecords(ByRef Records As Recordset)
+Sub Output(Optional ShtName As String = "", _
+           Optional ClearStaleData As Boolean, _
+           Optional MapToModel As Object)
+           ', _
+           'Optional ByRef Records As Recordset)
+    'Set Records = New ADODB.Recordset
+    
+    Dim fld As ADODB.field
+    
+    If ShtName <> "" Then
+        Do Until Records.EOF
+            xRow = xRow + 1
+            xCol = 0
+            
+            elseCol = 10
+            For Each fld In Records.fields
+                xCol = xCol + 1
+                Data.Cells(1, xCol) = fld.Name
+                Data.Cells(xRow, xCol) = fld.Value
+               
+            Next fld
+            Records.MoveNext
+            
+        Loop
+        
+    ElseIf Not IsMissing(MapToModel) Then
+        Do Until Records.EOF
+            'xRow = xRow + 1
+            'xCol = 0
+            
+            elseCol = 10
+            For Each fld In Records.fields
+                'xCol = xCol + 1
+                Debug.Print fld.Name, fld.Value
+                'Data.Cells(1, xCol) = fld.Name
+                'Data.Cells(xRow, xCol) = fld.value
+               
+            Next fld
+            Debug.Print vbCrLf
+            Records.MoveNext
+            
+        Loop
+    
+    End If
+    'MsgBox (CStr(xRow - 1) & " records fetched.")
+    
+Finally:
+    Disconnect
+    
+End Sub
+
+
+Sub OutputRecords(ShtName As String, Optional ClearStaleData As Boolean, Optional ByRef Records As Recordset)
     'Set Records = New ADODB.Recordset
     
     Dim fld As ADODB.field
@@ -113,7 +183,7 @@ Sub OutputRecords(ByRef Records As Recordset)
     'Set Records = Command.Execute(strSql)
     
     With Records
-        .Open Source:=strSql, ActiveConnection:=Connection, Options:=adCmdText
+        .Open source:=strSql, ActiveConnection:=Connection, Options:=adCmdText
     End With
     
     'F = 1
@@ -125,8 +195,8 @@ Sub OutputRecords(ByRef Records As Recordset)
         elseCol = 10
         For Each fld In Records.fields
             xCol = xCol + 1
-            Data.Cells(1, xCol) = fld.name
-            Data.Cells(xRow, xCol) = fld.value
+            Data.Cells(1, xCol) = fld.Name
+            Data.Cells(xRow, xCol) = fld.Value
            
         Next fld
         Records.MoveNext

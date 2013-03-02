@@ -10,21 +10,21 @@ Attribute VB_Exposed = False
 Private ¨vb_type As String
 Private ¨db_column As String
 
-Private Sub class_initialize()
+Private Sub Class_Initialize()
     Me.vb_type = "String"
 End Sub
 
 Public Property Get vb_type() As String
     vb_type = ¨vb_type
 End Property
-Public Property Let vb_type(value As String)
-    ¨vb_type = value
+Public Property Let vb_type(Value As String)
+    ¨vb_type = Value
 End Property
 
 Public Property Get db_column() As String
     db_column = ¨db_column
 End Property
-Public Property Let db_column(value As String)
-    ¨db_column = value
+Public Property Let db_column(Value As String)
+    ¨db_column = Value
 End Property
 

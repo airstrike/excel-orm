@@ -46,7 +46,7 @@ Private Sub CreateClass_(classname As String, bases As Variant, attrs As Variant
     
 CreateClassModule:
     Set Class = .VBComponents.Add(vbext_ct_ClassModule)
-    Class.name = classname
+    Class.Name = classname
     
 WriteClass:
         'def is the class definition
@@ -62,14 +62,35 @@ WriteClass:
             def = def & JoinAttrs(attrs) & vbCrLf
         End If
         
-        def = def & vbCrLf
-    
-        Class.CodeModule.AddFromString (def)
+        def = "'Class " & classname & " created on '----------------------------------------------------------" & Now() & vbCrLf & def
+        Class.CodeModule.AddFromString (def & vbCrLf)
     
     End With 'Application.VBE.ActiveVBProject
 
 End Sub
 
 
+Sub CreateClassFromString(classname As String, def As String)
+
+    Dim Class As VBComponent
+    With Application.VBE.ActiveVBProject
+        
+        On Error GoTo CreateClassModule
+        Set Class = .VBComponents(classname)
+        On Error GoTo 0
+    
+        Call Class.CodeModule.DeleteLines(1, Class.CodeModule.CountOfLines)
+        GoTo WriteClass
+    
+CreateClassModule:
+    Set Class = .VBComponents.Add(vbext_ct_ClassModule)
+    Class.Name = classname
+    
+WriteClass:
+        def = "'Class " & classname & " created on '----------------------------------------------------------" & Now() & vbCrLf & def
+        Class.CodeModule.AddFromString (def & vbCrLf)
+        
+    End With
+End Sub
 
 

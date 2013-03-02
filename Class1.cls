@@ -2,13 +2,14 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "BaseModel"
+Attribute VB_Name = "Class1"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' Base model definition ------------------------------------------------------------------------
-Private ¨table As String
+Private ¨hash As String
+Private ¨timeout As String
 Private ¨fields As Variant
 Private ¨filters As String
 Dim flds As Variant
@@ -42,3 +43,4 @@ Public Property Let filters(Value As String)
 End Property
 
 ' End of base model ------------------------------------------------------------------------
+
